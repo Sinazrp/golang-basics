@@ -11,7 +11,7 @@ func main() {
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/about", About)
 
-	fmt.Println(fmt.Sprintf("Listening on port %s", portNumber))
+	fmt.Println(fmt.Sprintf("Listening onn port %s", portNumber))
 	_ = http.ListenAndServe(portNumber, nil)
 
 }
