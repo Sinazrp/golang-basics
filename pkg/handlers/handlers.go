@@ -14,3 +14,4 @@ func About(res http.ResponseWriter, req *http.Request) {
 	render.RenderTemplate(res, "about")
 
 }
+func HandlerICon(w http.ResponseWriter, r *http.Request) {}
