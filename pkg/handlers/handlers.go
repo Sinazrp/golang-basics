@@ -1,15 +1,16 @@
-package main
+package handlers
 
 import (
+	"golang-bookingwebapp/pkg/render"
 	"net/http"
 )
 
 func Home(res http.ResponseWriter, req *http.Request) {
-	RenderTemplate(res, "home.page.tmpl")
+	render.RenderTemplate(res, "home")
 
 }
 
 func About(res http.ResponseWriter, req *http.Request) {
-	RenderTemplate(res, "about.page.tmpl")
+	render.RenderTemplate(res, "about")
 
 }

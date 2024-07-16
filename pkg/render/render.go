@@ -1,4 +1,4 @@
-package main
+package render
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 func RenderTemplate(res http.ResponseWriter, tmpl string) {
-	parsedTemplate, _ := template.ParseFiles("./templates/" + tmpl + ".html")
+	parsedTemplate, _ := template.ParseFiles("./templates/"+tmpl+".page.gohtml", "./templates/base.layout.gohtml")
 
 	err := parsedTemplate.Execute(res, nil)
 	if err != nil {
