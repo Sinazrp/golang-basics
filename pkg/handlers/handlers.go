@@ -6,11 +6,22 @@ import (
 	"net/http"
 )
 
-var Repo *Repository
+type TemplateData struct {
+	StringMap map[string]string
+	IntMap    map[string]int
+	FloatMap  map[string]float32
+	Data      map[string]interface{}
+	CSRFToken string
+	Flash     string
+	Warning   string
+	Error     string
+}
 
 type Repository struct {
 	App *config.AppConfig
 }
+
+var Repo *Repository
 
 func NewRepository(app *config.AppConfig) *Repository {
 	return &Repository{App: app}

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"golang-bookingwebapp/pkg/config"
+	"golang-bookingwebapp/pkg/handlers"
 	"html/template"
 	"log"
 	"net/http"
@@ -16,7 +17,7 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(res http.ResponseWriter, tmpl string) {
+func RenderTemplate(res http.ResponseWriter, tmpl string, data *handlers.TemplateData) {
 	tc := map[string]*template.Template{}
 	if app.UseCache {
 		tc = app.TemplateCache
@@ -59,9 +60,12 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	if err != nil {
 		return myCache, err
 	}
+
+	//parse each temp  and associate layout file and  put in map
 	for _, page := range pages {
 		pageName := filepath.Base(page)
 		fmt.Println(pageName)
+		//pars template as ts
 		ts, err := template.New(pageName).ParseFiles(page)
 		if err != nil {
 			return myCache, err
@@ -70,14 +74,18 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		if err != nil {
 			return myCache, err
 		}
+		// use ts to pars layout
 		if len(matches) > 0 {
 			ts, err = ts.ParseGlob("./templates/*.layout.gohtml")
 			if err != nil {
 				return myCache, err
 			}
 		}
+		//put cached template in map with file name key
 		myCache[pageName] = ts
-	}
+	} //end of for loop
+
+	//return all cached temp as map
 	return myCache, nil
 }
 
