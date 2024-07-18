@@ -2,20 +2,10 @@ package handlers
 
 import (
 	"golang-bookingwebapp/pkg/config"
+	"golang-bookingwebapp/pkg/models"
 	"golang-bookingwebapp/pkg/render"
 	"net/http"
 )
-
-type TemplateData struct {
-	StringMap map[string]string
-	IntMap    map[string]int
-	FloatMap  map[string]float32
-	Data      map[string]interface{}
-	CSRFToken string
-	Flash     string
-	Warning   string
-	Error     string
-}
 
 type Repository struct {
 	App *config.AppConfig
@@ -31,12 +21,14 @@ func NewHandlers(r *Repository) {
 }
 
 func (m *Repository) Home(res http.ResponseWriter, req *http.Request) {
-	render.RenderTemplate(res, "home.page.gohtml")
+	render.RenderTemplate(res, "home.page.gohtml", &models.TemplateData{})
 
 }
 
 func (m *Repository) About(res http.ResponseWriter, req *http.Request) {
-	render.RenderTemplate(res, "about.page.gohtml")
+	stringmap := make(map[string]string)
+	stringmap["test"] = "1.0.0"
+	render.RenderTemplate(res, "about.page.gohtml", &models.TemplateData{StringMap: stringmap})
 
 }
 func HandlerICon(w http.ResponseWriter, r *http.Request) {}
