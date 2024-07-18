@@ -1,16 +1,30 @@
 package handlers
 
 import (
+	"golang-bookingwebapp/pkg/config"
 	"golang-bookingwebapp/pkg/render"
 	"net/http"
 )
 
-func Home(res http.ResponseWriter, req *http.Request) {
+var Repo *Repository
+
+type Repository struct {
+	App *config.AppConfig
+}
+
+func NewRepository(app *config.AppConfig) *Repository {
+	return &Repository{App: app}
+}
+func NewHandlers(r *Repository) {
+	Repo = r
+}
+
+func (m *Repository) Home(res http.ResponseWriter, req *http.Request) {
 	render.RenderTemplate(res, "home.page.gohtml")
 
 }
 
-func About(res http.ResponseWriter, req *http.Request) {
+func (m *Repository) About(res http.ResponseWriter, req *http.Request) {
 	render.RenderTemplate(res, "about.page.gohtml")
 
 }

@@ -3,33 +3,42 @@ package render
 import (
 	"bytes"
 	"fmt"
+	"golang-bookingwebapp/pkg/config"
 	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
 )
 
+var app *config.AppConfig
+
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
+
 func RenderTemplate(res http.ResponseWriter, tmpl string) {
+	tc := map[string]*template.Template{}
+	if app.UseCache {
+		tc = app.TemplateCache
+
+	} else {
+		tc, _ = CreateTemplateCache()
+	}
 
 	// create template
-	tc, err := CreateTemplateCache()
-	if err != nil {
-		log.Fatal(err)
-	}
+	tc = app.TemplateCache
+
 	//get requested template from cache
 	t, ok := tc[tmpl]
 	if !ok {
 		log.Fatal("template not found: ", tmpl)
 	}
 	buf := new(bytes.Buffer)
-	err = t.Execute(buf, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	_ = t.Execute(buf, nil)
 
 	//render the template
 
-	_, err = buf.WriteTo(res)
+	_, err := buf.WriteTo(res)
 	if err != nil {
 		log.Fatal(err)
 	}
