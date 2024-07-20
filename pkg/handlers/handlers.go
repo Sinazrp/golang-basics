@@ -22,6 +22,9 @@ func NewRepository(app *config.AppConfig) {
 //}
 
 func (m *Repository) Home(res http.ResponseWriter, req *http.Request) {
+
+	remoteIp := req.RemoteAddr
+	m.App.Sessions.Put(req.Context(), "remote_ip", remoteIp)
 	render.RenderTemplate(res, "home.page.gohtml", &models.TemplateData{})
 
 }
@@ -29,6 +32,8 @@ func (m *Repository) Home(res http.ResponseWriter, req *http.Request) {
 func (m *Repository) About(res http.ResponseWriter, req *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["test"] = "1.0.0"
+	remoteIp := m.App.Sessions.GetString(req.Context(), "remote_ip")
+	stringMap["remote_ip"] = remoteIp
 	render.RenderTemplate(res, "about.page.gohtml", &models.TemplateData{StringMap: stringMap})
 
 }
